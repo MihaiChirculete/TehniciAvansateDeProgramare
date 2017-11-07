@@ -35,36 +35,34 @@ class Task
 		int getId() { return this->id; }
 };
 
-// A Simple Disjoint Set Data Structure
 struct DisjointSet
 {
     int *parent;
  
-    // Constructor
     DisjointSet(int n)
     {
         parent = new int[n+1];
  
-        // Every node is a parent of itself
+        // Fiecare nod este parinte al sau
         for (int i = 0; i <= n; i++)
             parent[i] = i;
     }
  
-    // Path Compression
+    // comprima drumul
     int find(int s)
     {
-        /* Make the parent of the nodes in the path
-           from u--> parent[u] point to parent[u] */
+        // Face ca parintele nodurilor din drumul 
+        // de la u --> parent[u] sa pointeze catre parent[u]
         if (s == parent[s])
             return s;
         return parent[s] = find(parent[s]);
     }
  
-    // Makes u as parent of v.
+    // Face ca u sa fie parintele lui v
     void merge(int u, int v)
     {
-        //update the greatest available
-        //free slot to u
+        // actualizeaza cel mai mare slot
+        // disponibil astfel incat acesta sa fie u
         parent[v] = u;
     }
 };
@@ -80,8 +78,6 @@ int main()
 	ofstream o("date.out");
 
 	vector<Task*> tasks, result;
-
-	//vector<int> result;	// vector de id-uri al taskurilor ce vor constituii secventa optima
 
 	int n, maxDeadline=0;
 
@@ -108,25 +104,24 @@ int main()
 
  	DisjointSet ds(maxDeadline);
 
-	// Traverse through all the jobs
+	// Parcurgem toate activitatile
     for (int i = 0; i < n; i++)
     {
-        // Find the maximum available free slot for
-        // this job (corresponding to its deadline)
+        // Gaseste slotul maxim disponibil pentru activitatea curenta
         int availableSlot = ds.find(tasks[i]->getDeadline());
- 
-        // If maximum available free slot is greater
-        // than 0, then free slot available
+
+        // Daca slotul maxim disponibil este mai mare ca 0
+        // atunci slotul este liber
         if (availableSlot > 0)
         {
-            // This slot is taken by this job 'i'
-            // so we need to update the greatest 
-            // free slot. Note that, in merge, we 
-            // make first parameter as parent of 
-            // second parameter. So future queries
-            // for availableSlot will return maximum
-            // available slot in set of 
-            // "availableSlot - 1"
+            // Acest slot este luat de jobul i
+            // prin urmare trebuie sa actualizam
+            // cel mai mare slot disponibil. 
+            // OBS: In merge facem ca primul parametru
+            // sa devina tatal parametrului doi. 
+            // Astfel urmatoarele cautari pentru availableSlot
+            // vor intoarce cel mai mare slot disponibil in multimea 
+            // availableSlot - 1
             ds.merge(ds.find(availableSlot - 1), 
                              availableSlot);
  
