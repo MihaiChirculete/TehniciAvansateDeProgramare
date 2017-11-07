@@ -17,6 +17,7 @@ class Text
 {
 	private:
 		int id, length, frequency;
+		float raport;
 
 	public:
 		Text(int id, int length, int frequency)
@@ -24,6 +25,7 @@ class Text
 			this->id = id;
 			this->length = length;
 			this->frequency = frequency;
+			this->raport = (float)frequency / (float)length;
 		}
 
 		void setLength(int length) { this->length = length; }
@@ -32,11 +34,15 @@ class Text
 		void setFrequency(int frequency) { this->frequency = frequency; }
 		int getFrequency() { return this->frequency; }
 
+		float getRap() { return this->raport; }
+
 		int getId() { return this->id; }
 };
 
 bool cmp_function (Text* i, Text* j)
 {
+
+	/*
 	if(i->getLength() == j->getLength())
 		return (i->getFrequency() > j->getFrequency());
 
@@ -44,6 +50,8 @@ bool cmp_function (Text* i, Text* j)
 		return (i->getLength() < j->getLength());
 
 	return (i->getLength() < j->getLength());
+	*/
+	return (i->getRap() > j->getRap());
 }
 
 int main()
